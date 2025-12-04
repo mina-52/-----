@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会費設定</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<style>
+:root {
+    --primary: #6366f1;
+    --secondary: #8b5cf6;
+    --warning: #f59e0b;
+}
+
+body {
+    font-family: 'Segoe UI', 'メイリオ', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 0 auto;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--warning), #d97706);
+    color: white;
+    border-radius: 16px 16px 0 0 !important;
+    padding: 20px;
+    font-weight: 600;
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+    padding: 12px 15px;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: var(--warning);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    outline: none;
+}
+
+.btn-modern {
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-warning-modern {
+    background: linear-gradient(135deg, var(--warning), #d97706);
+    color: white;
+}
+
+.btn-secondary-modern {
+    background: white;
+    color: #6366f1;
+}
+
+.current-fee-display {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.current-fee-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #92400e;
+    margin: 10px 0;
+}
+
+.page-title {
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1 class="page-title"><i class="bi bi-gear"></i> 会費設定</h1>
+    
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-wallet2"></i> 初期会費の設定</h5>
+        </div>
+        <div class="card-body">
+            <div class="current-fee-display">
+                <div style="color: #92400e; font-weight: 600; margin-bottom: 10px;">
+                    <i class="bi bi-info-circle"></i> 現在の初期会費
+                </div>
+                <div class="current-fee-value">{{ "{:,}".format(current_fee) }} 円</div>
+            </div>
+            
+            <form method="POST">
+                <div class="mb-4">
+                    <label for="initial_fee" class="form-label">
+                        <i class="bi bi-currency-yen"></i> 新しい初期会費を入力
+                    </label>
+                    <input type="number" 
+                           name="initial_fee" 
+                           id="initial_fee" 
+                           class="form-control" 
+                           value="{{ current_fee }}" 
+                           required 
+                           min="0"
+                           placeholder="例: 100000">
+                    <div class="form-text">
+                        <i class="bi bi-lightbulb"></i> 初期会費を変更すると、残高計算に反映されます
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-modern btn-warning-modern">
+                        <i class="bi bi-check-circle"></i> 更新する
+                    </button>
+                    <a href="/" class="btn btn-modern btn-secondary-modern">
+                        <i class="bi bi-arrow-left"></i> 戻る
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// 数値入力時に自動でカンマ区切り表示
+document.getElementById('initial_fee').addEventListener('input', function(e) {
+    const value = e.target.value.replace(/,/g, '');
+    if (value) {
+        e.target.value = parseInt(value).toLocaleString();
+    }
+});
+</script>
+</body>
+</html>

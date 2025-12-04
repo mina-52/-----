@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>収支登録</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<style>
+:root {
+    --primary: #6366f1;
+    --secondary: #8b5cf6;
+    --success: #10b981;
+    --danger: #ef4444;
+}
+
+body {
+    font-family: 'Segoe UI', 'メイリオ', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 16px 16px 0 0 !important;
+    padding: 20px;
+    font-weight: 600;
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+    padding: 12px 15px;
+    transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    outline: none;
+}
+
+.btn-modern {
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-primary-modern {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+}
+
+.btn-success-modern {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: white;
+}
+
+.btn-danger-modern {
+    background: linear-gradient(135deg, var(--danger), #dc2626);
+    color: white;
+}
+
+.record-item {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s;
+}
+
+.record-item:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.remove-btn {
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.remove-btn:hover {
+    background: #dc2626;
+    transform: scale(1.05);
+}
+
+.page-title {
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+</style>
+</head>
+<body>
+<div class="container" style="max-width: 900px;">
+    <h1 class="page-title"><i class="bi bi-plus-circle"></i> 収支登録</h1>
+
+    <!-- 単体登録 -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-file-earmark-plus"></i> 1件ずつ登録</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                <input type="hidden" name="single" value="1">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="bi bi-calendar"></i> 日付</label>
+                        <input type="date" name="date" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="bi bi-tag"></i> 区分</label>
+                        <select name="category" class="form-select" required>
+                            <option value="収入">収入</option>
+                            <option value="支出">支出</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="bi bi-currency-yen"></i> 金額</label>
+                        <input type="number" name="amount" class="form-control" required min="0">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="bi bi-chat-left-text"></i> メモ</label>
+                        <input type="text" name="memo" class="form-control" placeholder="任意">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-modern btn-primary-modern w-100">
+                            <i class="bi bi-check-circle"></i> 登録する
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 複数登録 -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-files"></i> まとめて登録</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" id="multiForm">
+                <input type="hidden" name="multi" value="1">
+                <div id="form-container">
+                    <div class="record-item">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label"><i class="bi bi-calendar"></i> 日付</label>
+                                <input type="date" name="date[]" class="form-control" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label"><i class="bi bi-tag"></i> 区分</label>
+                                <select name="category[]" class="form-select" required>
+                                    <option value="収入">収入</option>
+                                    <option value="支出">支出</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label"><i class="bi bi-currency-yen"></i> 金額</label>
+                                <input type="number" name="amount[]" class="form-control" required min="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label"><i class="bi bi-chat-left-text"></i> メモ</label>
+                                <input type="text" name="memo[]" class="form-control" placeholder="任意">
+                            </div>
+                            <div class="col-md-1 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger remove-btn w-100" onclick="removeRow(this)" style="display:none;">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-modern btn-success-modern me-2" onclick="addRow()">
+                        <i class="bi bi-plus-circle"></i> 行を追加
+                    </button>
+                    <button type="submit" class="btn btn-modern btn-primary-modern">
+                        <i class="bi bi-check-circle"></i> まとめて登録
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-modern btn-secondary" style="background: white; color: #6366f1;">
+            <i class="bi bi-arrow-left"></i> 戻る
+        </a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// 行追加機能
+function addRow() {
+    const container = document.getElementById('form-container');
+    const newRow = container.firstElementChild.cloneNode(true);
+    newRow.querySelectorAll('input').forEach(i => i.value = '');
+    newRow.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+    newRow.querySelector('.remove-btn').style.display = 'block';
+    container.appendChild(newRow);
+}
+
+// 行削除機能
+function removeRow(btn) {
+    const container = document.getElementById('form-container');
+    if (container.children.length > 1) {
+        btn.closest('.record-item').remove();
+    }
+}
+
+// 最初の行の削除ボタンを非表示
+document.querySelector('.remove-btn').style.display = 'none';
+
+// 日付自動変換機能（6桁入力で自動変換）
+document.querySelectorAll('input[type="date"]').forEach(el => {
+    el.addEventListener('input', e => {
+        const val = e.target.value;
+        // 6桁（例: 202511）を自動で 2025-11-01 に変換
+        if (/^\d{6}$/.test(val)) {
+            const y = val.slice(0,4);
+            const m = val.slice(4,6);
+            e.target.value = `${y}-${m}-01`;
+        }
+    });
+});
+</script>
+</body>
+</html>
