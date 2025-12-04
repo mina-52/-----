@@ -14,8 +14,18 @@
     --success: #10b981;
     --danger: #ef4444;
     --warning: #f59e0b;
+    --info: #3b82f6;
     --dark: #1f2937;
     --light: #f9fafb;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --border-color: #334155;
 }
 
 body {
@@ -23,113 +33,179 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px 0;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1600px;
 }
 
 .card {
     border: none;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    transition: transform 0.3s;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    margin-bottom: 25px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: white;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .card {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
 }
 
 .card-header {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
-    border-radius: 16px 16px 0 0 !important;
-    padding: 20px;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 25px;
     font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
 }
 
 .stats-card {
     background: white;
-    border-radius: 16px;
-    padding: 25px;
+    border-radius: 20px;
+    padding: 30px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: all 0.3s;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+}
+
+[data-theme="dark"] .stats-card {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.stats-card:hover::before {
+    left: 100%;
 }
 
 .stats-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    border-color: currentColor;
 }
 
-.stats-card.income {
-    border-top: 4px solid var(--success);
-}
-
-.stats-card.expense {
-    border-top: 4px solid var(--danger);
-}
-
-.stats-card.balance {
-    border-top: 4px solid var(--primary);
-}
-
-.stats-card.remaining {
-    border-top: 4px solid var(--warning);
-}
+.stats-card.income { border-top: 5px solid var(--success); }
+.stats-card.expense { border-top: 5px solid var(--danger); }
+.stats-card.balance { border-top: 5px solid var(--primary); }
+.stats-card.remaining { border-top: 5px solid var(--warning); }
+.stats-card.month { border-top: 5px solid var(--info); }
+.stats-card.records { border-top: 5px solid var(--secondary); }
 
 .stats-value {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 10px 0;
-    color: var(--dark);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 15px 0;
+    background: linear-gradient(135deg, currentColor, currentColor);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .stats-label {
     color: #6b7280;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+[data-theme="dark"] .stats-label {
+    color: var(--text-secondary);
 }
 
 .btn-modern {
-    border-radius: 10px;
-    padding: 12px 24px;
+    border-radius: 12px;
+    padding: 12px 28px;
     font-weight: 600;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-modern:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn-modern:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-.btn-primary-modern {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-}
-
-.btn-success-modern {
-    background: linear-gradient(135deg, var(--success), #059669);
-    color: white;
-}
-
-.btn-danger-modern {
-    background: linear-gradient(135deg, var(--danger), #dc2626);
-    color: white;
-}
-
-.btn-warning-modern {
-    background: linear-gradient(135deg, var(--warning), #d97706);
-    color: white;
-}
+.btn-primary-modern { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+.btn-success-modern { background: linear-gradient(135deg, var(--success), #059669); color: white; }
+.btn-danger-modern { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; }
+.btn-warning-modern { background: linear-gradient(135deg, var(--warning), #d97706); color: white; }
+.btn-info-modern { background: linear-gradient(135deg, var(--info), #2563eb); color: white; }
 
 .table-modern {
     background: white;
     border-radius: 12px;
     overflow: hidden;
+}
+
+[data-theme="dark"] .table-modern {
+    background: var(--bg-card);
+    color: var(--text-primary);
 }
 
 .table-modern thead {
@@ -138,95 +214,285 @@ body {
 }
 
 .table-modern tbody tr {
-    transition: all 0.2s;
+    transition: all 0.3s;
 }
 
 .table-modern tbody tr:hover {
     background: #f3f4f6;
     transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+[data-theme="dark"] .table-modern tbody tr:hover {
+    background: #334155;
 }
 
 .filter-section {
     background: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+[data-theme="dark"] .filter-section {
+    background: var(--bg-card);
+    color: var(--text-primary);
 }
 
 .search-box {
-    border-radius: 10px;
+    border-radius: 12px;
     border: 2px solid #e5e7eb;
-    padding: 10px 15px;
+    padding: 12px 18px;
     transition: all 0.3s;
+}
+
+[data-theme="dark"] .search-box {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
 }
 
 .search-box:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
     outline: none;
+    transform: scale(1.02);
 }
 
 .chart-container {
     background: white;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    margin-bottom: 25px;
+}
+
+[data-theme="dark"] .chart-container {
+    background: var(--bg-card);
+    color: var(--text-primary);
 }
 
 .page-title {
     color: white;
     text-align: center;
-    margin-bottom: 30px;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    margin-bottom: 40px;
+    font-weight: 800;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    font-size: 2.5rem;
+    letter-spacing: -1px;
 }
 
 .badge-modern {
-    padding: 6px 12px;
-    border-radius: 8px;
+    padding: 8px 16px;
+    border-radius: 10px;
     font-weight: 600;
+    font-size: 0.9rem;
 }
 
 .action-buttons .btn {
-    margin: 0 3px;
-    padding: 6px 12px;
+    margin: 0 4px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.action-buttons .btn:hover {
+    transform: scale(1.1);
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 12px 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1050;
+    background: white;
+    border-radius: 12px;
+    padding: 20px 25px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    transform: translateX(400px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 350px;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+[data-theme="dark"] .notification {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.sort-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sort-btn {
+    padding: 8px 16px;
     border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+[data-theme="dark"] .sort-btn {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.sort-btn:hover, .sort-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.pagination-modern {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.pagination-modern .page-link {
+    border-radius: 10px;
+    padding: 10px 16px;
+    border: 2px solid #e5e7eb;
+    color: var(--primary);
+    transition: all 0.3s;
+}
+
+[data-theme="dark"] .pagination-modern .page-link {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.pagination-modern .page-link:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.pagination-modern .page-link.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }
 </style>
 </head>
 <body>
+<div class="theme-toggle" onclick="toggleTheme()">
+    <i class="bi bi-moon-fill" id="theme-icon"></i>
+</div>
+
+{% if imported %}
+<div class="notification show" id="notification">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-check-circle-fill text-success me-2" style="font-size: 1.5rem;"></i>
+        <div>
+            <strong>インポート成功</strong><br>
+            <small>{{ imported }}件のデータをインポートしました</small>
+        </div>
+    </div>
+</div>
+<script>
+setTimeout(() => {
+    document.getElementById('notification').classList.remove('show');
+}, 5000);
+</script>
+{% endif %}
+
 <div class="container">
     <h1 class="page-title"><i class="bi bi-wallet2"></i> サークル会計管理システム</h1>
     
     <!-- 統計カード -->
     <div class="row g-4 mb-4">
-        <div class="col-md-3 col-sm-6">
+        <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card income">
-                <i class="bi bi-arrow-up-circle-fill text-success" style="font-size: 2rem;"></i>
+                <i class="bi bi-arrow-up-circle-fill text-success" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">収入合計</div>
                 <div class="stats-value text-success">{{ "{:,}".format(income) }} 円</div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6">
+        <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card expense">
-                <i class="bi bi-arrow-down-circle-fill text-danger" style="font-size: 2rem;"></i>
+                <i class="bi bi-arrow-down-circle-fill text-danger" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">支出合計</div>
                 <div class="stats-value text-danger">{{ "{:,}".format(expense) }} 円</div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6">
+        <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card balance">
-                <i class="bi bi-calculator-fill text-primary" style="font-size: 2rem;"></i>
+                <i class="bi bi-calculator-fill text-primary" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">差引残高</div>
                 <div class="stats-value text-primary">{{ "{:,}".format(balance) }} 円</div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6">
+        <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card remaining">
-                <i class="bi bi-wallet-fill text-warning" style="font-size: 2rem;"></i>
+                <i class="bi bi-wallet-fill text-warning" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">会費残高</div>
                 <div class="stats-value text-warning">{{ "{:,}".format(remaining_fee) }} 円</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 追加統計カード -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="stats-card month">
+                <i class="bi bi-calendar-month text-info" style="font-size: 2.5rem;"></i>
+                <div class="stats-label">今月の収入</div>
+                <div class="stats-value text-info">{{ "{:,}".format(month_income) }} 円</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="stats-card month">
+                <i class="bi bi-calendar-month text-danger" style="font-size: 2.5rem;"></i>
+                <div class="stats-label">今月の支出</div>
+                <div class="stats-value text-danger">{{ "{:,}".format(month_expense) }} 円</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="stats-card records">
+                <i class="bi bi-file-earmark-text text-secondary" style="font-size: 2.5rem;"></i>
+                <div class="stats-label">総レコード数</div>
+                <div class="stats-value text-secondary">{{ "{:,}".format(total_records) }} 件</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="stats-card balance">
+                <i class="bi bi-graph-up-arrow text-primary" style="font-size: 2.5rem;"></i>
+                <div class="stats-label">平均支出</div>
+                <div class="stats-value text-primary">{{ "{:,}".format(avg_expense|int) }} 円</div>
             </div>
         </div>
     </div>
@@ -234,13 +500,22 @@ body {
     <!-- アクションボタン -->
     <div class="card mb-4">
         <div class="card-body text-center">
-            <a href="/add" class="btn btn-modern btn-primary-modern me-2">
+            <a href="/add" class="btn btn-modern btn-primary-modern me-2 mb-2">
                 <i class="bi bi-plus-circle"></i> 収支登録
             </a>
-            <a href="/set_fee" class="btn btn-modern btn-warning-modern me-2">
+            <a href="/set_fee" class="btn btn-modern btn-warning-modern me-2 mb-2">
                 <i class="bi bi-gear"></i> 会費設定
             </a>
-            <a href="/export" class="btn btn-modern btn-success-modern">
+            <a href="/reports" class="btn btn-modern btn-info-modern me-2 mb-2">
+                <i class="bi bi-graph-up"></i> レポート
+            </a>
+            <a href="/budget" class="btn btn-modern btn-success-modern me-2 mb-2">
+                <i class="bi bi-piggy-bank"></i> 予算管理
+            </a>
+            <a href="/import" class="btn btn-modern btn-secondary me-2 mb-2">
+                <i class="bi bi-upload"></i> CSVインポート
+            </a>
+            <a href="/export" class="btn btn-modern btn-success-modern mb-2">
                 <i class="bi bi-download"></i> CSV出力
             </a>
         </div>
@@ -248,18 +523,39 @@ body {
 
     <!-- グラフセクション -->
     <div class="row mb-4">
-        <div class="col-12">
+        <div class="col-lg-8">
             <div class="chart-container">
-                <h5 class="mb-3"><i class="bi bi-graph-up"></i> 収支推移グラフ</h5>
+                <h5 class="mb-4"><i class="bi bi-graph-up"></i> 収支推移グラフ（過去12ヶ月）</h5>
                 <canvas id="chart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="chart-container">
+                <h5 class="mb-4"><i class="bi bi-pie-chart"></i> 支出内訳（サブカテゴリ）</h5>
+                <canvas id="pieChart"></canvas>
             </div>
         </div>
     </div>
 
     <!-- フィルタセクション -->
     <div class="filter-section">
-        <h5 class="mb-3"><i class="bi bi-funnel"></i> 検索・フィルタ</h5>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0"><i class="bi bi-funnel"></i> 検索・フィルタ</h5>
+            <div class="sort-buttons">
+                <button class="sort-btn {% if sort_by == 'date' %}active{% endif %}" onclick="sortBy('date')">
+                    <i class="bi bi-calendar"></i> 日付
+                </button>
+                <button class="sort-btn {% if sort_by == 'amount' %}active{% endif %}" onclick="sortBy('amount')">
+                    <i class="bi bi-currency-yen"></i> 金額
+                </button>
+                <button class="sort-btn {% if sort_by == 'category' %}active{% endif %}" onclick="sortBy('category')">
+                    <i class="bi bi-tag"></i> 区分
+                </button>
+            </div>
+        </div>
         <form method="GET" action="/" class="row g-3">
+            <input type="hidden" name="sort" id="sort-input" value="{{ sort_by }}">
+            <input type="hidden" name="order" id="order-input" value="{{ sort_order }}">
             <div class="col-md-3">
                 <input type="text" name="search" class="form-control search-box" 
                        placeholder="メモ・金額で検索..." value="{{ search_query }}">
@@ -272,10 +568,10 @@ body {
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="date" name="date_from" class="form-control search-box" value="{{ date_from }}">
+                <input type="date" name="date_from" class="form-control search-box" value="{{ date_from }}" placeholder="開始日">
             </div>
             <div class="col-md-3">
-                <input type="date" name="date_to" class="form-control search-box" value="{{ date_to }}">
+                <input type="date" name="date_to" class="form-control search-box" value="{{ date_to }}" placeholder="終了日">
             </div>
             <div class="col-md-1">
                 <button type="submit" class="btn btn-modern btn-primary-modern w-100">
@@ -297,6 +593,7 @@ body {
                         <tr>
                             <th>日付</th>
                             <th>区分</th>
+                            <th>サブカテゴリ</th>
                             <th>金額</th>
                             <th>メモ</th>
                             <th>操作</th>
@@ -314,8 +611,9 @@ body {
                                         <span class="badge bg-danger badge-modern">{{ r[2] }}</span>
                                     {% endif %}
                                 </td>
-                                <td><strong>{{ "{:,}".format(r[3]) }}</strong> 円</td>
-                                <td>{{ r[4] or '-' }}</td>
+                                <td><small>{{ r[3] or '-' }}</small></td>
+                                <td><strong>{{ "{:,}".format(r[4]) }}</strong> 円</td>
+                                <td>{{ r[5] or '-' }}</td>
                                 <td class="action-buttons">
                                     <a href="/edit/{{ r[0] }}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i> 編集
@@ -331,9 +629,9 @@ body {
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="5" class="text-center py-4 text-muted">
-                                    <i class="bi bi-inbox" style="font-size: 2rem;"></i><br>
-                                    データがありません
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox" style="font-size: 3rem;"></i><br>
+                                    <h5 class="mt-3">データがありません</h5>
                                 </td>
                             </tr>
                         {% endif %}
@@ -341,6 +639,18 @@ body {
                 </table>
             </div>
         </div>
+        {% if total_pages > 1 %}
+        <div class="card-footer">
+            <nav class="pagination-modern">
+                {% for page_num in range(1, total_pages + 1) %}
+                    <a href="?page={{ page_num }}&sort={{ sort_by }}&order={{ sort_order }}{% if search_query %}&search={{ search_query }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" 
+                       class="page-link {% if page_num == current_page %}active{% endif %}">
+                        {{ page_num }}
+                    </a>
+                {% endfor %}
+            </nav>
+        </div>
+        {% endif %}
         <div class="card-footer text-muted text-center">
             <small><i class="bi bi-clock"></i> 最終更新：{{ last_update }}</small>
         </div>
@@ -349,11 +659,49 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+// テーマ切り替え
+function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = document.getElementById('theme-icon');
+    icon.className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+}
+
+// テーマの読み込み
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeIcon(savedTheme);
+
+// 並び替え機能
+function sortBy(field) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentSort = urlParams.get('sort');
+    const currentOrder = urlParams.get('order');
+    
+    let newOrder = 'desc';
+    if (currentSort === field && currentOrder === 'desc') {
+        newOrder = 'asc';
+    }
+    
+    urlParams.set('sort', field);
+    urlParams.set('order', newOrder);
+    window.location.search = urlParams.toString();
+}
+
 // グラフの描画
 fetch('/api/chart-data')
     .then(response => response.json())
     .then(data => {
         const ctx = document.getElementById('chart').getContext('2d');
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -364,14 +712,16 @@ fetch('/api/chart-data')
                     borderColor: '#10b981',
                     backgroundColor: 'rgba(16, 185, 129, 0.1)',
                     tension: 0.4,
-                    fill: true
+                    fill: true,
+                    borderWidth: 3
                 }, {
                     label: '支出',
                     data: data.expense,
                     borderColor: '#ef4444',
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
                     tension: 0.4,
-                    fill: true
+                    fill: true,
+                    borderWidth: 3
                 }]
             },
             options: {
@@ -380,23 +730,82 @@ fetch('/api/chart-data')
                 plugins: {
                     legend: {
                         position: 'top',
-                    },
-                    title: {
-                        display: false
+                        labels: {
+                            color: isDark ? '#f1f5f9' : '#1f2937',
+                            font: { size: 14, weight: '600' }
+                        }
                     }
                 },
                 scales: {
+                    x: {
+                        ticks: { color: isDark ? '#cbd5e1' : '#6b7280' },
+                        grid: { color: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }
+                    },
                     y: {
                         beginAtZero: true,
                         ticks: {
+                            color: isDark ? '#cbd5e1' : '#6b7280',
                             callback: function(value) {
                                 return value.toLocaleString() + ' 円';
                             }
-                        }
+                        },
+                        grid: { color: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }
                     }
                 }
             }
         });
+    });
+
+// 円グラフの描画
+fetch('/api/category-pie-data')
+    .then(response => response.json())
+    .then(data => {
+        if (data.labels.length > 0) {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.values,
+                        backgroundColor: [
+                            '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b',
+                            '#10b981', '#3b82f6', '#ef4444', '#14b8a6',
+                            '#f97316', '#a855f7'
+                        ],
+                        borderWidth: 3,
+                        borderColor: isDark ? '#1e293b' : '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: isDark ? '#f1f5f9' : '#1f2937',
+                                font: { size: 11 },
+                                padding: 10
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ' + context.parsed.toLocaleString() + ' 円 (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            document.getElementById('pieChart').parentElement.innerHTML = '<p class="text-center text-muted">データがありません</p>';
+        }
     });
 </script>
 </body>

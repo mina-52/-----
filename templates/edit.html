@@ -117,18 +117,24 @@ body {
                     </div>
                     <div class="col-md-6">
                         <label class="form-label"><i class="bi bi-tag"></i> 区分</label>
-                        <select name="category" class="form-select" required>
+                        <select name="category" id="category-edit" class="form-select" required onchange="updateSubcategories()">
                             <option value="収入" {% if record[2] == '収入' %}selected{% endif %}>収入</option>
                             <option value="支出" {% if record[2] == '支出' %}selected{% endif %}>支出</option>
                         </select>
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label"><i class="bi bi-tags"></i> サブカテゴリ</label>
+                        <select name="subcategory" id="subcategory-edit" class="form-select">
+                            <option value="">選択してください</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label"><i class="bi bi-currency-yen"></i> 金額</label>
-                        <input type="number" name="amount" class="form-control" value="{{ record[3] }}" required min="0">
+                        <input type="number" name="amount" class="form-control" value="{{ record[4] }}" required min="0">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label"><i class="bi bi-chat-left-text"></i> メモ</label>
-                        <input type="text" name="memo" class="form-control" value="{{ record[4] or '' }}" placeholder="任意">
+                        <input type="text" name="memo" class="form-control" value="{{ record[5] or '' }}" placeholder="任意">
                     </div>
                     <div class="col-12">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -147,6 +153,37 @@ body {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// サブカテゴリの定義
+const subcategories = {
+    '収入': ['会費', '寄付', '補助金', 'その他'],
+    '支出': ['会議費', '備品', '交通費', '飲食費', 'イベント', 'その他']
+};
+
+// サブカテゴリの更新
+function updateSubcategories() {
+    const categorySelect = document.getElementById('category-edit');
+    const subcategorySelect = document.getElementById('subcategory-edit');
+    const category = categorySelect.value;
+    const currentSubcategory = '{{ record[3] or "" }}';
+    
+    subcategorySelect.innerHTML = '<option value="">選択してください</option>';
+    if (subcategories[category]) {
+        subcategories[category].forEach(sub => {
+            const option = document.createElement('option');
+            option.value = sub;
+            option.textContent = sub;
+            if (sub === currentSubcategory) {
+                option.selected = true;
+            }
+            subcategorySelect.appendChild(option);
+        });
+    }
+}
+
+// 初期化
+updateSubcategories();
+</script>
 </body>
 </html>
 

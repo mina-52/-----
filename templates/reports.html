@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>レポート</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+    --primary: #6366f1;
+    --secondary: #8b5cf6;
+    --success: #10b981;
+    --danger: #ef4444;
+}
+
+body {
+    font-family: 'Segoe UI', 'メイリオ', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    margin-bottom: 25px;
+    background: white;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 25px;
+    font-weight: 600;
+}
+
+.page-title {
+    color: white;
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 800;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+}
+
+.btn-modern {
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-primary-modern {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+}
+
+.table-modern {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table-modern thead {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1 class="page-title"><i class="bi bi-graph-up"></i> レポート</h1>
+    
+    <div class="text-center mb-4">
+        <a href="/" class="btn btn-modern btn-primary-modern">
+            <i class="bi bi-arrow-left"></i> トップに戻る
+        </a>
+    </div>
+
+    <!-- 年次レポート -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-calendar-year"></i> 年次レポート</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-modern table-hover">
+                    <thead>
+                        <tr>
+                            <th>年</th>
+                            <th>収入合計</th>
+                            <th>支出合計</th>
+                            <th>差引残高</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for year_data in yearly_data %}
+                        <tr>
+                            <td><strong>{{ year_data[0] }}</strong></td>
+                            <td class="text-success"><strong>{{ "{:,}".format(year_data[1]) }}</strong> 円</td>
+                            <td class="text-danger"><strong>{{ "{:,}".format(year_data[2]) }}</strong> 円</td>
+                            <td class="text-primary"><strong>{{ "{:,}".format(year_data[1] - year_data[2]) }}</strong> 円</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 月次レポート -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-calendar-month"></i> 月次レポート（過去12ヶ月）</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-modern table-hover">
+                    <thead>
+                        <tr>
+                            <th>年月</th>
+                            <th>収入合計</th>
+                            <th>支出合計</th>
+                            <th>差引残高</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for month_data in monthly_report %}
+                        <tr>
+                            <td><strong>{{ month_data[0] }}</strong></td>
+                            <td class="text-success"><strong>{{ "{:,}".format(month_data[1]) }}</strong> 円</td>
+                            <td class="text-danger"><strong>{{ "{:,}".format(month_data[2]) }}</strong> 円</td>
+                            <td class="text-primary"><strong>{{ "{:,}".format(month_data[1] - month_data[2]) }}</strong> 円</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- サブカテゴリ別統計 -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-pie-chart"></i> サブカテゴリ別支出統計</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-modern table-hover">
+                    <thead>
+                        <tr>
+                            <th>サブカテゴリ</th>
+                            <th>件数</th>
+                            <th>合計金額</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in subcategory_stats %}
+                        <tr>
+                            <td><strong>{{ stat[0] }}</strong></td>
+                            <td>{{ stat[1] }} 件</td>
+                            <td class="text-danger"><strong>{{ "{:,}".format(stat[2]) }}</strong> 円</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
