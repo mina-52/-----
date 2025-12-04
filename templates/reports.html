@@ -101,9 +101,9 @@ body {
                         {% for year_data in yearly_data %}
                         <tr>
                             <td><strong>{{ year_data[0] }}</strong></td>
-                            <td class="text-success"><strong>{{ "{:,}".format(year_data[1]) }}</strong> 円</td>
-                            <td class="text-danger"><strong>{{ "{:,}".format(year_data[2]) }}</strong> 円</td>
-                            <td class="text-primary"><strong>{{ "{:,}".format(year_data[1] - year_data[2]) }}</strong> 円</td>
+                            <td class="text-success"><strong>{{ "{:,}".format(year_data[1]|int) }}</strong> 円</td>
+                            <td class="text-danger"><strong>{{ "{:,}".format(year_data[2]|int) }}</strong> 円</td>
+                            <td class="text-primary"><strong>{{ "{:,}".format((year_data[1]|int) - (year_data[2]|int)) }}</strong> 円</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -132,9 +132,9 @@ body {
                         {% for month_data in monthly_report %}
                         <tr>
                             <td><strong>{{ month_data[0] }}</strong></td>
-                            <td class="text-success"><strong>{{ "{:,}".format(month_data[1]) }}</strong> 円</td>
-                            <td class="text-danger"><strong>{{ "{:,}".format(month_data[2]) }}</strong> 円</td>
-                            <td class="text-primary"><strong>{{ "{:,}".format(month_data[1] - month_data[2]) }}</strong> 円</td>
+                            <td class="text-success"><strong>{{ "{:,}".format(month_data[1]|int) }}</strong> 円</td>
+                            <td class="text-danger"><strong>{{ "{:,}".format(month_data[2]|int) }}</strong> 円</td>
+                            <td class="text-primary"><strong>{{ "{:,}".format((month_data[1]|int) - (month_data[2]|int)) }}</strong> 円</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -163,7 +163,7 @@ body {
                         <tr>
                             <td><strong>{{ stat[0] }}</strong></td>
                             <td>{{ stat[1] }} 件</td>
-                            <td class="text-danger"><strong>{{ "{:,}".format(stat[2]) }}</strong> 円</td>
+                            <td class="text-danger"><strong>{{ "{:,}".format(stat[2]|int) }}</strong> 円</td>
                         </tr>
                         {% endfor %}
                     </tbody>

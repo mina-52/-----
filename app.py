@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, jsonify, Response
 import sqlite3
-from datetime import datetime, timedelta
+from datetime import datetime
 import csv
 import io
 
@@ -33,7 +33,7 @@ def init_db():
     # 既存のrecordsテーブルにsubcategoryカラムを追加（存在しない場合）
     try:
         c.execute("ALTER TABLE records ADD COLUMN subcategory TEXT")
-    except:
+    except sqlite3.OperationalError:
         pass  # カラムが既に存在する場合はスキップ
     c.execute("INSERT OR IGNORE INTO settings (id, initial_fee) VALUES (1, 100000)")
     conn.commit()
@@ -88,7 +88,7 @@ def index():
     c.execute("SELECT COUNT(*) FROM records")
     total_records = c.fetchone()[0] or 0
     c.execute("SELECT AVG(amount) FROM records WHERE category='支出'")
-    avg_expense = c.fetchone()[0] or 0
+    avg_expense = int(c.fetchone()[0] or 0)
     c.execute("SELECT MAX(amount) FROM records WHERE category='支出'")
     max_expense = c.fetchone()[0] or 0
     c.execute("SELECT MIN(amount) FROM records WHERE category='支出'")
@@ -243,13 +243,13 @@ def delete_record(record_id):
 def export_csv():
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-    c.execute("SELECT date, category, amount, memo FROM records ORDER BY date DESC")
+    c.execute("SELECT date, category, subcategory, amount, memo FROM records ORDER BY date DESC")
     records = c.fetchall()
     conn.close()
     
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(['日付', '区分', '金額', 'メモ'])
+    writer.writerow(['日付', '区分', 'サブカテゴリ', '金額', 'メモ'])
     for record in records:
         writer.writerow(record)
     
@@ -450,8 +450,9 @@ def import_csv():
                         c.execute("INSERT INTO records (date, category, subcategory, amount, memo) VALUES (?, ?, ?, ?, ?)",
                                   (date, category, subcategory, amount, memo))
                         count += 1
-                    except:
-                        pass
+                    except (sqlite3.Error, ValueError) as e:
+                        # 無効なデータはスキップ
+                        continue
             conn.commit()
             conn.close()
             return redirect(f'/?imported={count}')

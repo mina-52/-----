@@ -115,7 +115,7 @@ body {
                 <div style="color: #92400e; font-weight: 600; margin-bottom: 10px;">
                     <i class="bi bi-info-circle"></i> 現在の初期会費
                 </div>
-                <div class="current-fee-value">{{ "{:,}".format(current_fee) }} 円</div>
+                <div class="current-fee-value">{{ "{:,}".format(current_fee|int) }} 円</div>
             </div>
             
             <form method="POST">

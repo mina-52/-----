@@ -439,28 +439,28 @@ setTimeout(() => {
             <div class="stats-card income">
                 <i class="bi bi-arrow-up-circle-fill text-success" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">収入合計</div>
-                <div class="stats-value text-success">{{ "{:,}".format(income) }} 円</div>
+                <div class="stats-value text-success">{{ "{:,}".format(income|int) }} 円</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card expense">
                 <i class="bi bi-arrow-down-circle-fill text-danger" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">支出合計</div>
-                <div class="stats-value text-danger">{{ "{:,}".format(expense) }} 円</div>
+                <div class="stats-value text-danger">{{ "{:,}".format(expense|int) }} 円</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card balance">
                 <i class="bi bi-calculator-fill text-primary" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">差引残高</div>
-                <div class="stats-value text-primary">{{ "{:,}".format(balance) }} 円</div>
+                <div class="stats-value text-primary">{{ "{:,}".format(balance|int) }} 円</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card remaining">
                 <i class="bi bi-wallet-fill text-warning" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">会費残高</div>
-                <div class="stats-value text-warning">{{ "{:,}".format(remaining_fee) }} 円</div>
+                <div class="stats-value text-warning">{{ "{:,}".format(remaining_fee|int) }} 円</div>
             </div>
         </div>
     </div>
@@ -471,21 +471,21 @@ setTimeout(() => {
             <div class="stats-card month">
                 <i class="bi bi-calendar-month text-info" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">今月の収入</div>
-                <div class="stats-value text-info">{{ "{:,}".format(month_income) }} 円</div>
+                <div class="stats-value text-info">{{ "{:,}".format(month_income|int) }} 円</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card month">
                 <i class="bi bi-calendar-month text-danger" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">今月の支出</div>
-                <div class="stats-value text-danger">{{ "{:,}".format(month_expense) }} 円</div>
+                <div class="stats-value text-danger">{{ "{:,}".format(month_expense|int) }} 円</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="stats-card records">
                 <i class="bi bi-file-earmark-text text-secondary" style="font-size: 2.5rem;"></i>
                 <div class="stats-label">総レコード数</div>
-                <div class="stats-value text-secondary">{{ "{:,}".format(total_records) }} 件</div>
+                <div class="stats-value text-secondary">{{ "{:,}".format(total_records|int) }} 件</div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6">
@@ -612,7 +612,7 @@ setTimeout(() => {
                                     {% endif %}
                                 </td>
                                 <td><small>{{ r[3] or '-' }}</small></td>
-                                <td><strong>{{ "{:,}".format(r[4]) }}</strong> 円</td>
+                                <td><strong>{{ "{:,}".format(r[4]|int) }}</strong> 円</td>
                                 <td>{{ r[5] or '-' }}</td>
                                 <td class="action-buttons">
                                     <a href="/edit/{{ r[0] }}" class="btn btn-sm btn-warning">
